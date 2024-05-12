@@ -16,12 +16,12 @@ provider "azurerm" {
 
 variable "vnet_names" {
   type    = list(string)
-  default = ["vnet1", "vnet3", "vnet2"]
+  default = ["vnet1", "vnet2", "vnet3"]
 }
 
 variable "vnet_address_spaces" {
   type    = list(string)
-  default = ["10.0.0.0/16", "10.2.0.0/16", "10.1.0.0/16"]
+  default = ["10.0.0.0/16", "10.1.0.0/16", "10.2.0.0/16"]
 }
 
 variable "location" {
@@ -50,5 +50,5 @@ resource "azurerm_virtual_network" "vnets" {
 
 # After changed :  vnet1 -> "10.0.0.0/16" , vnet3 -> "10.2.0.0/16" , vnet2 -> "10.1.0.0/16" 
 
-# The count func destroy these 3 Vnets and Recreate this 3 Vnets  
+# The count func destroy these 3 Vnets and again Recreate these 3 Vnets  
 
