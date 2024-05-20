@@ -37,7 +37,7 @@ resource "azurerm_virtual_network" "vnets" {
 
 }
 
-resource "azurerm_network_security_group" "nsg" {   // Created Multiple Nsg
+resource "azurerm_network_security_group" "nsg" {      // Created Multiple Nsg
   count = var.nsg_count
   name = "nsg-${count.index+1}"
   resource_group_name = azurerm_resource_group.rg.name
@@ -56,4 +56,28 @@ resource "azurerm_network_security_group" "nsg" {   // Created Multiple Nsg
   }
   depends_on = [ azurerm_virtual_network.vnets ]
 }
+
+
+locals {
+  vnet_ids = {
+    for vnet_key, vnet_val in azurerm_virtual_network.vnets :
+    vnet_key => [for subnet in vnet_val.subnet : subnet.id]
+  }
+  vnet_name = keys(local.vnet_ids)
+  subnet_id = values(local.vnet_ids)
+  subnet_ids = flatten(local.subnet_id)
+}
+
+resource "azurerm_subnet_network_security_group_association" "nsg_ass" {
+ count = length(local.subnet_ids)
+ subnet_id = local.subnet_ids[count.index]
+ network_security_group_id = azurerm_network_security_group.nsg[count.index].id 
+ depends_on = [ azurerm_network_security_group.nsg ]
+}
+
+# local.vnet_name --> ["vnet1" , "vnet2"]
+# local.subnet_id --> [ [subnet1.id , subnet2.id] , [subnet1.id , subnet2.id]]
+# local.subnet_ids --> [ subnet1.id , subnet2.id , subnet1.id , subnet2.id ]
+# flatten([[1,2] , [3,4] , [5,6]) --> [ 1,2,3,4,5,6] 
+
 
