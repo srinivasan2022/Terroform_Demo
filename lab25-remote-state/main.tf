@@ -22,7 +22,7 @@ provider "azurerm" {
 
 
 locals {
-  name     = "data_block_rg"
+  name     = "seenu_RG"
   location = "southeast asia"
 }
 

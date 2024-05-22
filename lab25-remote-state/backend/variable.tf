@@ -13,3 +13,9 @@ variable "storage_account_name" {
   description = "The name of the storage account"
   type        = string
 }
+
+# tfvars file :
+
+# resource_group_name = "tfstate2024_RG"
+# location = "east us"
+# storage_account_name = "tflearnremotestatestacc"
