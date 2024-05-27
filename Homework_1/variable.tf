@@ -27,6 +27,9 @@ variable "vnets" {
   }
 }
 
-variable "nsg_count" {
-  default = 4
+variable "rules_file" {
+    type = string
+    default = "rules.csv"
+  
 }
+
